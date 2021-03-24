@@ -6,17 +6,40 @@ resources:
       path: a-murphy/UploadArtifact
       branches:
         include: '^{{gitBranch}}$'
+  - name: uploadArtifact_filespec
+    type: FileSpec
+    configuration:
+      sourceArtifactory: aidan_artifactory
+  - name: uploadArtifact_remotefile
+    type: RemoteFile
+    configuration:     
+      source: aidan_aws
+      fileLocation: jfrog-shippable-aidan/fakelogs
+      fileName: ${current_day}-*.txt
+  
 
 pipelines:
   - name: UploadArtifactPipeline
     steps:
-      - name: test_upload_step
+      - name: upload_file
         type: UploadArtifact
         configuration:
-          nodePool: k8s
           targetPath: "example-repo-local/testArtifactUpload/${run_id}"
           sourcePath: "pipelines.yml"
           integrations:
             - name: aidan_artifactory
           inputResources:
             - name: uploadArtifact_gitRepoResource
+          inputSteps:
+            - name: upload_tar
+      - name: upload_tar
+        type: UploadArtifact
+        configuration:
+          targetPath: "example-repo-local/testArtifactUpload/${run_id}"
+          integrations:
+            - name: aidan_artifactory
+          inputResources:
+            - name: upload_remotefile
+        execution:
+          onStart:
+            - current_day=$(date "%Y-%m-%d")
