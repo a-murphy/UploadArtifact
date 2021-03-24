@@ -25,7 +25,7 @@ pipelines:
         type: Bash
         execution:
           onExecute:
-            - add_run_variables current_date=$(date +\"%Y-%m-%d\")
+            - add_run_variables current_date=$(date +%Y-%m-%d)
       - name: upload_file
         type: UploadArtifact
         configuration:
