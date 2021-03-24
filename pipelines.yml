@@ -14,7 +14,7 @@ resources:
     type: RemoteFile
     configuration:     
       source: aidan_aws
-      fileLocation: jfrog-shippable-aidan/fakelogs
+      fileLocation: s3://jfrog-shippable-aidan/fakelogs
       fileName: ${current_day}-*.txt
   
 
