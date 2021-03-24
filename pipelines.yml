@@ -15,12 +15,23 @@ resources:
     configuration:     
       source: aidan_aws
       fileLocation: s3://jfrog-shippable-aidan/fakelogs
-      fileName: ${current_day}-*.txt
+      fileName: ${current_date}-1.txt
   
 
 pipelines:
   - name: UploadArtifactPipeline
     steps:
+      - name: determine_file
+        configuration:
+          targetPath: "example-repo-local/testArtifactUpload/${run_id}"
+          sourcePath: "pipelines.yml"
+          integrations:
+            - name: aidan_artifactory
+          outputResources:
+            - name: uploadArtifact_remoteFile
+        execution:
+          onExecute:
+            - write_output uploadArtifact_remoteFile fileName="$(date "%Y-%m-%d")-1.txt"
       - name: upload_file
         type: UploadArtifact
         configuration:
@@ -40,6 +51,3 @@ pipelines:
             - name: aidan_artifactory
           inputResources:
             - name: uploadArtifact_remoteFile
-        execution:
-          onStart:
-            - current_day=$(date "%Y-%m-%d")
