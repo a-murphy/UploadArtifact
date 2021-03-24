@@ -13,6 +13,7 @@ pipelines:
       - name: test_upload_step
         type: UploadArtifact
         configuration:
+          nodePool: k8s
           targetPath: "example-repo-local/testArtifactUpload/${run_id}"
           sourcePath: "pipelines.yml"
           integrations:
