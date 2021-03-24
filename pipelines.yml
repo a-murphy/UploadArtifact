@@ -28,7 +28,7 @@ pipelines:
             - name: uploadArtifact_remoteFile
         execution:
           onExecute:
-            - write_output uploadArtifact_remoteFile fileName="$(date "%Y-%m-%d")-1.txt"
+            - add_run_variables current_date="$(date \"%Y-%m-%d\")"
       - name: upload_file
         type: UploadArtifact
         configuration:
