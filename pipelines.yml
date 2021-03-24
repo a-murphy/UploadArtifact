@@ -1,4 +1,8 @@
 resources:
+  - name: uploadArtifact_trigger
+    type: CronTrigger
+    configuration:
+      interval: 0 0 * * * *
   - name: uploadArtifact_filespec
     type: FileSpec
     configuration:
@@ -16,6 +20,9 @@ pipelines:
     steps:
       - name: determine_file
         type: Bash
+        configuration:
+          inputResources:
+            - name: uploadArtifact_trigger
         execution:
           onExecute:
             - add_run_variables current_date=$(date +%Y-%m-%d)
