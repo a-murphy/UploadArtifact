@@ -7,7 +7,7 @@ resources:
     type: FileSpec
     configuration:
       sourceArtifactory: aidan_artifactory
-  - name: uploadArtifact_RemoteFile
+  - name: uploadArtifact_remotefile
     type: RemoteFile
     configuration:     
       source: aidan_aws
@@ -26,7 +26,7 @@ pipelines:
         execution:
           onExecute:
             - add_run_variables current_date=$(date +%Y-%m-%d)
-      - name: upload_tar
+      - name: upload
         type: UploadArtifact
         configuration:
           targetPath: "example-repo-local/testArtifactUpload/"
@@ -35,7 +35,7 @@ pipelines:
           inputSteps:
             - name: determine_file
           inputResources:
-            - name: uploadArtifact_RemoteFile
+            - name: uploadArtifact_remotefile
           outputResources:
             - name: uploadArtifact_filespec
       - name: download_filespec
