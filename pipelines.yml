@@ -1,0 +1,21 @@
+resources:
+  - name: uploadArtifact_gitRepoResource
+    type: GitRepo
+    configuration:
+      gitProvider: aidan_github
+      path: a-murphy/UploadArtifact
+      branches:
+        include: '^{{gitBranch}}$'
+
+pipelines:
+  - name: UploadArtifactPipeline
+    steps:
+      - name: test_upload_step
+        type: UploadArtifact
+        configuration:
+          targetPath: "example-repo-local/testArtifactUpload/${run_id}"
+          sourcePath: "pipelines.yml"
+          integrations:
+            - name: aidan_artifactory
+          inputResources:
+            - name: uploadArtifact_gitRepoResource
