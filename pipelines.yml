@@ -1,11 +1,4 @@
 resources:
-  - name: uploadArtifact_gitRepoResource
-    type: GitRepo
-    configuration:
-      gitProvider: aidan_github
-      path: a-murphy/UploadArtifact
-      branches:
-        include: '^{{gitBranch}}$'
   - name: uploadArtifact_filespec
     type: FileSpec
     configuration:
@@ -26,24 +19,23 @@ pipelines:
         execution:
           onExecute:
             - add_run_variables current_date=$(date +%Y-%m-%d)
-      - name: upload_file
-        type: UploadArtifact
-        configuration:
-          targetPath: "example-repo-local/testArtifactUpload/${run_id}"
-          sourcePath: "pipelines.yml"
-          integrations:
-            - name: aidan_artifactory
-          inputResources:
-            - name: uploadArtifact_gitRepoResource
-          inputSteps:
-            - name: upload_tar
       - name: upload_tar
         type: UploadArtifact
         configuration:
-          targetPath: "example-repo-local/testArtifactUpload/${run_id}"
+          targetPath: "example-repo-local/testArtifactUpload/"
           integrations:
             - name: aidan_artifactory
           inputSteps:
             - name: determine_file
           inputResources:
             - name: uploadArtifact_RemoteFile
+          outputResources:
+            - name: uploadArtifact_filespec
+      - name: download_filespec
+        type: Bash
+        configuration:
+          inputResources:
+            - name: uploadArtifact_filespec
+        execution:
+          onExecute:
+            - ls -al $res_uploadArtifact_filespec_resourcePath
