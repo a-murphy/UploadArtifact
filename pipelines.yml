@@ -38,4 +38,5 @@ pipelines:
             - name: uploadArtifact_filespec
         execution:
           onExecute:
-            - ls -al $res_uploadArtifact_filespec_resourcePath
+            - ls -alR $res_uploadArtifact_filespec_resourcePath
+            - cat $res_uploadArtifact_filespec_resourcePath/**/*.txt
