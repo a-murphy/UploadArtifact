@@ -39,7 +39,7 @@ pipelines:
           integrations:
             - name: aidan_artifactory
           inputResources:
-            - name: upload_remotefile
+            - name: uploadArtifact_remotefile
         execution:
           onStart:
             - current_day=$(date "%Y-%m-%d")
