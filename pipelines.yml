@@ -10,7 +10,7 @@ resources:
     type: FileSpec
     configuration:
       sourceArtifactory: aidan_artifactory
-  - name: uploadArtifact_remotefile
+  - name: uploadArtifact_remoteFile
     type: RemoteFile
     configuration:     
       source: aidan_aws
@@ -39,7 +39,7 @@ pipelines:
           integrations:
             - name: aidan_artifactory
           inputResources:
-            - name: uploadArtifact_remotefile
+            - name: uploadArtifact_remoteFile
         execution:
           onStart:
             - current_day=$(date "%Y-%m-%d")
